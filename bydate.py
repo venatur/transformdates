@@ -17,42 +17,13 @@ test_date = ford['Fecha Venta']
 #parsed_test = datetime.strptime(test_date['Fecha Venta'], '%Y-%m-%d')
 ford['date'] = pd.to_datetime(ford['Fecha Venta'], format='%Y-%m-%d')
 
-def operacion_six(df):
-    nowtime = 4
-    factor = 6
-    factor2 = 12
-    if df[1]<factor:
-        return (factor - df[1] + nowtime )
-    elif df[1] > factor:
-        return (factor2 - df[1]) + nowtime
-    else:
-        return nowtime
-
-def operacion_nine(df):
-    nowtime = 4
-    factor = 9
-    factor2 = 12
-    if df[1]<factor:
-        return (factor - df[1] + nowtime )
-    elif df[1] > factor:
-        return (factor2 - df[1]) + nowtime
-    else:
-        return nowtime
-
-def filter_date(df,dg):
-    factor = 2019
-    if df < factor:
-        return "es de 6 meses"
-    else:
-        return "es de 9 meses"
 
 ford = ford.assign(
 elapsed_months=((12*(now.year - ford["date"].map(lambda x: x.year))) 
 +(now.month - ford["date"].map(lambda x: x.month))))
 
 ford = ford.assign(exactime=(ford["elapsed_months"].map(lambda x: divmod(x,12))))
-#ford = ford.assign(appointment=ford["exactime"].apply(operacion_six))
-#ford = ford.assign(tempo=ford["date"].apply(filter_date(ford["date"], ford["exactime"])))
+
 nowtime =  now.month
 factorsix = 6
 factornine = 9
@@ -78,4 +49,6 @@ for date, em in zip(ford["date"],ford["elapsed_months"]):
             mod = em % factornine
             nueva.append((factornine-mod) + nowtime)
             
-ford["nueva"] = nueva
+ford["appointment"] = nueva
+
+ford.to_excel("fordbydate.xlsx")
