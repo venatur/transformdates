@@ -29,7 +29,7 @@ factorsix = 6
 factornine = 9
 factor2 = 12 
 nueva = []
-for date, em in zip(ford["date"],ford["elapsed_months"]):
+for date, em in zip(ford["date"],ford["elapsed_months"]):|
     if date.year < 2019:
         if em < factorsix:
             resta = em - factorsix
